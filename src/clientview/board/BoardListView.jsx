@@ -1,20 +1,23 @@
 import { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
+import ApiClient from '../../services/ApiClient'; 
 
 function BoardList() {
   const [articles, setArticles] = useState([]);
   const navigate = useNavigate(); 
 
-  useEffect(() => {
-    fetch("http://localhost:8080/boardAPI/list")
-      .then((res) => res.json())
-      .then((data) => setArticles(data));
-  }, []);
-
-  const handleClick = (id) => {
-    navigate(`/view/${id}`);
+  const handleClick = (articleId) => {
+    navigate(`/detail/${articleId}`);
   };
+
+  useEffect(() => {
+    ApiClient.getArticleList()
+    .then((data) => {
+      console.log(data);
+      setArticles(data)
+    });
+  }, []);
 
   return (
     <div>
@@ -23,18 +26,22 @@ function BoardList() {
         <thead>
           <tr>
             <th>글번호</th>
+            <th>카테고리</th>
             <th>작성자</th>
             <th>제목</th>
             <th>작성일</th>
+            <th>좋아요 수</th>
           </tr>
         </thead>
         <tbody>
           {articles.map((a) => (
-            <tr key={a.id}>
-            <td>{a.id}</td>
-            <td>{a.author}</td>
-            <td  onClick={() => handleClick(a.id)} style={{ cursor: 'pointer' }}>{a.title}</td>
-            <td>{a.regDate}</td>
+            <tr key={a.boardId}>
+            <td>{a.boardId}</td>
+            <td>{a.ctId}</td>
+            <td>{a.userId}</td>
+            <td  onClick={() => handleClick(a.boardId)} style={{ cursor: 'pointer' }}>{a.title}</td>
+            <td>{a.regDate[0] + '-' + a.regDate[1] + '-' + a.regDate[2]}</td>
+            <td>{a.likeCount}</td>
           </tr>
           ))}
         </tbody>
