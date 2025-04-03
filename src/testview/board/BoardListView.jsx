@@ -1,20 +1,31 @@
 import { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
+import ApiClient from "../../service/ApiClient";
+import DatailView from "./DetailView"
 
 function BoardList() {
   const [articles, setArticles] = useState([]);
+  const [userId, setUserId] = useState("");
   const navigate = useNavigate(); 
 
   useEffect(() => {
-    fetch("http://localhost:8080/boardAPI/list")
+    ApiClient.getArticles()
       .then((res) => res.json())
-      .then((data) => setArticles(data));
+      .then((data) => {
+        setArticles(data);
+        console.log(data);
+      });
   }, []);
 
   const handleClick = (id) => {
-    navigate(`/view/${id}`);
+    navigate(`/viewarticle/${id}`);
   };
+
+  const handleSubmit = (id) => {
+    navigate(`/add`, { state: { userId: id } });
+  };
+  
 
   return (
     <div>
@@ -30,16 +41,17 @@ function BoardList() {
         </thead>
         <tbody>
           {articles.map((a) => (
-            <tr key={a.id}>
-            <td>{a.id}</td>
-            <td>{a.author}</td>
-            <td  onClick={() => handleClick(a.id)} style={{ cursor: 'pointer' }}>{a.title}</td>
-            <td>{a.regDate}</td>
-          </tr>
+            <tr key={a.boardId}>
+              <td>{a.boardId}</td>
+              <td>{a.userId}</td>
+              <td  onClick={() => handleClick(a.boardId)} style={{ cursor: 'pointer' }}>{a.title}</td>
+              <td>{a.regDate}</td>
+            </tr>
           ))}
         </tbody>
       </table>
-      <Link to={'/add'}>글 쓰기</Link>
+      <button onClick={() => handleSubmit(userId)}>글 쓰기</button>
+      
     </div>
   );
 }
