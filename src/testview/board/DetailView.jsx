@@ -1,10 +1,13 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import {Link} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import ApiClient from '../../service/ApiClient';
+import CommentView from './CommentView';
 
 
-function ArticleDetail(props) {
+function ArticleDetail() {
+  const location = useLocation();
+  const userId = location.state?.userId || "guest"; // 기본값 설정
   const { id } = useParams(); // URL에서 :id 값을 읽어옴
   const [article, setArticle] = useState(null);
 
@@ -28,6 +31,11 @@ function ArticleDetail(props) {
       <p><strong>코드내용:</strong> {article.codeContent}</p>
       <p><strong>에러내용:</strong> {article.errorContent}</p>
       <p>{article.regDate}</p>
+      <p>{article.likeCout}</p>
+    
+      <div>
+        <CommentView boardId={id} userId={userId}/>
+      </div>
       <div>
         <Link to={'/'}>돌아가기</Link>
       </div>

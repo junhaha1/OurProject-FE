@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation, Link } from "react-router-dom";
 import ApiClient from "../../service/ApiClient";
-import DatailView from "./DetailView"
 
 function BoardList() {
   const [articles, setArticles] = useState([]);
-  const [userId, setUserId] = useState("");
+  //const [userId, setUserId] = useState("");
   const navigate = useNavigate(); 
+  const location = useLocation();
+  const userId = location.state?.userId || "guest"; // 기본값 설정
 
   useEffect(() => {
     ApiClient.getArticles()
@@ -19,7 +19,7 @@ function BoardList() {
   }, []);
 
   const handleClick = (id) => {
-    navigate(`/viewarticle/${id}`);
+    navigate(`/viewarticle/${id}`, {state: {userId: id}});
   };
 
   const handleSubmit = (id) => {
@@ -29,6 +29,13 @@ function BoardList() {
 
   return (
     <div>
+      <tr>
+          <td align="right"></td>
+          <td>
+          <Link to={'/login'}>로그인</Link>
+          <a href='#'>로그아웃</a>
+          </td>
+      </tr>
       <h2>게시글 목록</h2>
       <table>
         <thead>

@@ -12,11 +12,11 @@ class ApiClient{
     //댓글
     static POST_COMMENT = "/board/comment/";
     static GET_COMMENT = "/board/comment/list/";
-    static PUT_COMMENT = "/board/comment";
-    static DELETE_COMMENT = "/board/comment";
+    static PUT_COMMENT = "/board/comment/";
+    static DELETE_COMMENT = "/board/comment/";
 
     //사용자
-    static GET_USER = "/board/user";
+    static GET_USER = "/board/user/";
 
 
     //게시글 (등록, 조회, 상세조회, 삭제)
@@ -79,7 +79,7 @@ class ApiClient{
 
     //댓글
     static sendComment(articleId, userId, content, codeContent, regDate, updateDate){
-        return fetch(ApiClient.SEVER_URL + ApiClient.POST_COMMENT + articleId, {
+        return fetch(ApiClient.SEVER_URL + ApiClient.POST_COMMENT + userId + articleId, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -124,7 +124,7 @@ class ApiClient{
 
      //사용자
     static getUser(userId){
-        console.log("Get Comment By articleId ");
+        console.log("Get user By articleId ");
         return fetch(ApiClient.SEVER_URL + ApiClient.GET_USER + userId);
     }
   }

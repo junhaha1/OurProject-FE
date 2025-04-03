@@ -24,40 +24,50 @@ function AddArticle() {
     });
   };
 
+  const checkCategory = (e) => {
+    setCtId(e.target.value);
+    console.log(ctId);
+  }
+
   return (
     <div>
       <h2>게시글 작성</h2>
       <p>작성자: {userId}</p>
-      <table border="0" align="center">
-        <tbody>
+      <select id="selectBox" name="category" onChange={checkCategory}>
+              <option value='0'>공지</option>
+              <option value='1'>코드/에러</option>
+              <option value='2'>일반</option>
+            </select>
           
+      <table border="0" align="center">
+        <tbody>            
             <tr>
                 <td colSpan="2">
-                    <input type="text" name="i_title" class="class-content" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="제목을 입력해주세요." />
+                    <input type="text" name="title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="제목을 입력해주세요." />
                 </td>
             </tr>
             <tr>
                 <td colSpan="2">
                     <textarea name="content" rows="10"
-                        class="class-content" value={content} onChange={(e) => setContent(e.target.value)} placeholder="내용을 입력해주세요" />
+                       value={content} onChange={(e) => setContent(e.target.value)} placeholder="내용을 입력해주세요" />
                 </td>
             </tr>
             <tr>
                 <td colSpan="2">
                     <textarea name="codeContent" rows="10"
-                        class="class-content" value={codeContent} onChange={(e) => setCodeContent(e.target.value)} placeholder="코드를 입력해주세요" />
+                       value={codeContent} onChange={(e) => setCodeContent(e.target.value)} placeholder="코드를 입력해주세요" />
                 </td>
             </tr>
             <tr>
                 <td colSpan="2">
                     <textarea name="errorContent" rows="10"
-                        class="class-content" value={errorContent} onChange={(e) => setErrorContent(e.target.value)} placeholder="에러 내용을 입력해주세요" />
+                        value={errorContent} onChange={(e) => setErrorContent(e.target.value)} placeholder="에러 내용을 입력해주세요" />
                 </td>
             </tr>
             <p>{regDate.toLocaleString()} / {updateDate.toLocaleString()}</p>
             <tr>
                 <td align="right"></td>
-                <td colspan="2">
+                <td>
                   <button onClick={() => handleSubmit(userId)}>등록</button>
                   <Link to={'/'}>취소</Link>
                 </td>
