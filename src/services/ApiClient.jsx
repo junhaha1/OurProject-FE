@@ -16,6 +16,10 @@ class ApiClient{
     return fetch(ApiClient.SERVER_URL + ApiClient.BOARD_ARTICLE + '/list/' + articleId)
     .then((res) => res.json());
   }
+
+  static sendArticle(userId, article_data){
+    return fetch(ApiClient.SERVER_URL + ApiClient.BOARD_ARTICLE + "/" + userId, article_data);
+  }
 }
 
 export default ApiClient;
