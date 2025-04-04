@@ -1,50 +1,39 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import ApiClient from "../../services/ApiClient";
+import { useNavigate } from "react-router-dom";
 
-function ArticleDetail() {
-  const { articleId } = useParams(); // URL에서 :id 값을 읽어옴
-  const [article, setArticle] = useState(null);
+import CommentList from "./CommentList";
+import Article from "./Article";
 
-  useEffect(() => {
-    ApiClient.getArticleDetail(articleId)
-    .then((data) => {
-      console.log(data)
-      setArticle(data)
-    });
-  }, [articleId]);
+import { Container, Card, Button, Row, Col } from "react-bootstrap";
 
-  if (!article) return <div>로딩 중...</div>;
+function ArticleDetailView() {
+  const { articleId } = useParams();
+  const navigate = useNavigate();
+
+  const moveHome = () => {
+    navigate("/");
+  };
 
   return (
-    <div>
-      <div>
-        <h2>게시글 상세</h2>
-        <p>
-          <strong>글번호:</strong> {article.boardId}
-        </p>
-        <p>
-          <strong>카테고리:</strong> {article.ctId}
-        </p>
-        <p>
-          <strong>작성자:</strong> {article.userId}
-        </p>
-        <p>
-          <strong>제목:</strong> {article.title}
-        </p>
-        <p>
-          <strong>내용:</strong> {article.content}
-        </p>
-      </div>
-      <div>
-        <h2>댓글</h2>
-      </div>
-      <div>
-        <Link to={"/"}>돌아가기</Link>
-      </div>
-    </div>
+    <Container className="my-5 d-flex justify-content-center">
+      <Card className="p-4 shadow-sm w-100" style={{ maxWidth: "800px" }}>
+        <Card.Body>
+          {/*게시글 내용*/}
+          <Article boardId={articleId}/>
+          <div className="my-4" />
+          {/*댓글 리스트*/}
+          <CommentList boardId={articleId}/>
+
+          {/* 버튼 */}
+          <div className="text-end">
+            <Button variant="secondary" onClick={moveHome}>
+              목록으로
+            </Button>
+          </div>
+        </Card.Body>
+      </Card>
+    </Container>
   );
 }
 
-export default ArticleDetail;
+export default ArticleDetailView;
