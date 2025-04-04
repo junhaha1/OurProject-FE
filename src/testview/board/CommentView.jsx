@@ -10,7 +10,7 @@ const CommentView = (props) => {
     const [comments, setComments] = useState([]);
 
     useEffect(() =>{
-        console.log(boardId);
+        console.log(boardId, userId);
         ApiClient.getComment(boardId)
         .then(res => res.json())
       .then(data => {

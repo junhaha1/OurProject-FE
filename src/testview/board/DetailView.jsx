@@ -10,6 +10,7 @@ function ArticleDetail() {
   const userId = location.state?.userId || "guest"; // 기본값 설정
   const { id } = useParams(); // URL에서 :id 값을 읽어옴
   const [article, setArticle] = useState(null);
+  const [login, setLongin] = useState(false);
 
   useEffect(() => {
     ApiClient.getArticle(id)
@@ -20,6 +21,7 @@ function ArticleDetail() {
       });
   }, [id]);
 
+  if(userId.trim() === "guest") return <div>로그인 유저만 가능한 서비스 입니다. </div>;
   if (!article) return <div>로딩 중...</div>;
 
   return (

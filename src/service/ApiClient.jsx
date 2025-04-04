@@ -79,7 +79,7 @@ class ApiClient{
 
     //댓글
     static sendComment(articleId, userId, content, codeContent, regDate, updateDate){
-        return fetch(ApiClient.SEVER_URL + ApiClient.POST_COMMENT + userId + articleId, {
+        return fetch(ApiClient.SEVER_URL + ApiClient.POST_COMMENT + userId +"/" + articleId, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

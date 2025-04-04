@@ -19,7 +19,7 @@ function BoardList() {
   }, []);
 
   const handleClick = (id) => {
-    navigate(`/viewarticle/${id}`, {state: {userId: id}});
+    navigate(`/viewarticle/${id}`, {state: { userId: userId }});
   };
 
   const handleSubmit = (id) => {
