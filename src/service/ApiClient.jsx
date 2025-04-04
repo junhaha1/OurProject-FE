@@ -18,6 +18,41 @@ class ApiClient{
     //사용자
     static GET_USER = "/board/user/";
 
+    //게시글 좋아요 
+    static POST_ARTICLEGOOD = "/board/good/"; 
+    static DELETE_ARTICLEGOOD = "/board/good/"; // /good/{articleId}/{userId}
+
+
+    //게시글 좋아요 
+    static sendArticleGood(articleId, userId){
+        console.log("save Article Good ");
+        return fetch(ApiClient.SEVER_URL + ApiClient.POST_ARTICLEGOOD, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                userId: userId,
+                boardId: articleId
+            }),
+        });
+    }
+
+    static deleteArticle(articleId, userId){
+        console.log("Delete ArticleGood");
+        return fetch(ApiClient.SEVER_URL + ApiClient.DELETE_ARTICLE + articleId + "/" + userId, {
+            method: "DELETE", 
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
+    }
+
+
+
+
+    //댓글 좋아요 
+
 
     //게시글 (등록, 조회, 상세조회, 삭제)
     static sendArticle(userId, ctId, title, content, codeContent, errorContent, regDate, updateDate){
@@ -50,7 +85,7 @@ class ApiClient{
     }
       
     //수정
-    static updateArticle(userId, ctId, title, content, codeContent, errorContent, regDate, updateDate){
+    static updateArticle(articleId, userId, ctId, title, content, codeContent, errorContent, regDate, updateDate){
         return fetch(ApiClient.SEVER_URL + ApiClient.POST_ARTICLE + articleId, {
             method: "PUT",
             headers: {
@@ -72,7 +107,12 @@ class ApiClient{
     //삭제
     static deleteArticle(articleId){
         console.log("Delete Article By articleId ");
-        return fetch(ApiClient.SEVER_URL + ApiClient.DELETE_ARTICLE + articleId);
+        return fetch(ApiClient.SEVER_URL + ApiClient.DELETE_ARTICLE + articleId, {
+            method: "DELETE", 
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
     }
     
 

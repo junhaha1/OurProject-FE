@@ -5,6 +5,7 @@ import ApiClient from '../../service/ApiClient';
 const LoginView = () => {
     const [userId, setUserId] = useState("");
     const [pwd, setPwd] = useState("");
+    const [name, setName] = useState('guest');
 
     const navigate = useNavigate(); 
 
@@ -16,6 +17,7 @@ const LoginView = () => {
 
             if(id.trim() === data.userId.trim()){
                 setUserId(data.userId);
+                setName(data.name);
             }else{
                 alert("아이디를 확인해주세요");
                 return;
@@ -28,7 +30,7 @@ const LoginView = () => {
                 return;
             }           
 
-            navigate('/', { state: { userId: `${userId}`}});
+            navigate('/', { state: { userId: userId, name: name}});
         }).catch((error) => {
             console.error("Error fetching user:", error);
             alert("서버 오류가 발생했습니다.");
