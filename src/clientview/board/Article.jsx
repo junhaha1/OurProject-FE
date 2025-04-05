@@ -6,6 +6,19 @@ const Article = (props) => {
   const [article, setArticle] = useState(null);
   const [userId, setUserId] = useState("test@naver.com");
 
+  const getCategoryLabel = (ctId) => { //카테고리 아이디 -> 텍스트로 변환
+    switch (ctId) {
+      case 0:
+        return "공지";
+      case 1:
+        return "코드/에러";
+      case 2:
+        return "일반";
+      default:
+        return "알 수 없음";
+    }
+  };
+
   /* 추가해서 구현할 부분 => 사용자가 해당 게시글에 좋아요를 눌렀는지 확인하는 서버 API 추가 해야됨. 
   const handleLike = async (articleId, userId) => { // 서버에 좋아요 요청 이벤트
     const good_data = {
@@ -50,7 +63,7 @@ const Article = (props) => {
           <strong>글번호:</strong> {article.boardId}
         </Col>
         <Col sm={6}>
-          <strong>분류:</strong> {article.ctId || "없음"}
+          <strong>분류:</strong> {getCategoryLabel(article.ctId)}
         </Col>
       </Row>
       <Row className="mb-3 text-muted">
@@ -74,10 +87,26 @@ const Article = (props) => {
       >
         {article.content}
       </div>
+      {article.ctId === 1 && (
+        <>
+          <div
+            className="bg-light rounded p-3 mb-4"
+            style={{ whiteSpace: "pre-wrap" }}
+          >
+            {article.codeContent}
+          </div>
+          <div
+            className="bg-light rounded p-3 mb-4"
+            style={{ whiteSpace: "pre-wrap" }}
+          >
+            {article.errorContent}
+          </div>
+        </>
+      )}
       <Button
         variant="light"
         size="sm"
-        onClick={()=>handleLike(article.boardId, userId)}
+        onClick={() => handleLike(article.boardId, userId)}
       >
         👍 {article.likeCount || 0}
       </Button>
