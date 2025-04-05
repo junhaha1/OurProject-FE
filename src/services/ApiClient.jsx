@@ -23,13 +23,35 @@ class ApiClient{
     .then((res) => res.json());
   }
 
+  //get: 게시글 좋아요 조회
+  static countBoardGood(boardId){
+    return fetch(ApiClient.SERVER_URL + ApiClient.BOARD_GOOD + "/" + boardId)
+  }
+
+  //get: 게시글 좋아요 눌렀는지 확인
+  static getExistsBoardGood(boardId, userId){
+    return fetch(ApiClient.SERVER_URL + ApiClient.BOARD_GOOD + "/" + boardId + "/" + userId)
+    .then((res) => res.json());
+  }
+
   //post: 새 글 추가
   static sendArticle(userId, article_data){
     return fetch(ApiClient.SERVER_URL + ApiClient.BOARD_ARTICLE + "/" + userId, article_data);
   }
   //post: 게시글 좋아요 추가 기능
-  static likeArticle(good_data){
-    return fetch(ApiClient.SERVER_URL + ApiClient.BOARD_GOOD, good_data);
+  static addLikeArticle(boardId, userId) {
+    return fetch(ApiClient.SERVER_URL + ApiClient.BOARD_GOOD, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ boardId, userId })  // 서버 DTO와 정확히 일치
+    });
+  }
+
+  //delete: 게시글 좋아요 삭제 기능
+  static deleteLikeArticle(boardId, userId){
+    return fetch(ApiClient.SERVER_URL + ApiClient.BOARD_GOOD + "/" + boardId + "/" + userId, {method: 'DELETE'})
   }
 }
 

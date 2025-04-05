@@ -5,6 +5,7 @@ import { Container, Card, Button, Row, Col } from "react-bootstrap";
 const Article = (props) => {
   const [article, setArticle] = useState(null);
   const [userId, setUserId] = useState("test@naver.com");
+  const [existsGood, setExistsGood] = useState(null);
 
   const getCategoryLabel = (ctId) => { //카테고리 아이디 -> 텍스트로 변환
     switch (ctId) {
@@ -19,32 +20,45 @@ const Article = (props) => {
     }
   };
 
-  /* 추가해서 구현할 부분 => 사용자가 해당 게시글에 좋아요를 눌렀는지 확인하는 서버 API 추가 해야됨. 
   const handleLike = async (articleId, userId) => { // 서버에 좋아요 요청 이벤트
-    const good_data = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ articleId, userId}),
-    };
-
     try {
-      await ApiClient.likeArticle(good_data); // 서버에 좋아요 요청 보내기
+      await ApiClient.addLikeArticle(articleId, userId); // 서버에 좋아요 요청 보내기
+      const response = await ApiClient.countBoardGood(articleId);
+      const count = await response.json();  // 서버에서 숫자만 내려준다고 가정
+      setExistsGood(true);
+
       setArticle((prev) => ({
         ...prev,
-        likeCount: (prev.likeCount || 0) + 1,
+        likeCount: count,
       }));
     } catch (error) {
-      console.error("좋아요 실패", error);
-      alert("좋아요 처리 중 오류가 발생했습니다.");
+      console.error("좋아요 수 조회 실패", error);
     }
   };
-  */
+
+  const handleUnlike = async (articleId, userId) => { // 서버에 좋아요 삭제 요청 이벤트
+    try {
+      await ApiClient.deleteLikeArticle(articleId, userId); // 서버에 좋아요 삭제 요청 보내기
+      const response = await ApiClient.countBoardGood(articleId);
+      const count = await response.json();  // 서버에서 숫자만 내려준다고 가정
+      setExistsGood(false);
+
+      setArticle((prev) => ({
+        ...prev,
+        likeCount: count,
+      }));
+    } catch (error) {
+      console.error("좋아요 수 조회 실패", error);
+    }
+  };
 
   useEffect(() => {
     ApiClient.getArticleDetail(props.boardId).then((data) => {
       setArticle(data);
+    });
+
+    ApiClient.getExistsBoardGood(props.boardId, userId).then((data) => {
+      setExistsGood(data);
     });
   }, [props.boardId]);
 
@@ -106,9 +120,14 @@ const Article = (props) => {
       <Button
         variant="light"
         size="sm"
-        onClick={() => handleLike(article.boardId, userId)}
+        onClick={() =>{
+          existsGood
+            ? handleUnlike(article.boardId, userId)
+            : handleLike(article.boardId, userId)
+        }
+        }
       >
-        👍 {article.likeCount || 0}
+        {existsGood ? "❤️" : "🤍"} {article.likeCount || 0}
       </Button>
     </>
   );
