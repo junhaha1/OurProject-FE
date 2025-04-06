@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
-import ApiClient from "../../service/ApiClient";
+import ApiClient from "../service/ApiClient";
 
 function AddArticle() {
   const location = useLocation();
@@ -35,80 +35,74 @@ function AddArticle() {
   if (userId.trim() === "guest") return <div>로그인 유저만 가능한 서비스입니다.</div>;
 
   return (
-    <div>
-      <h2>게시글 작성</h2>
-      <p>작성자: {userId}</p>
-
-      <select id="selectBox" name="category" onChange={handleCategoryChange} value={ctId}>
-        <option value="0">공지</option>
-        <option value="1">코드/에러</option>
-        <option value="2">일반</option>
-      </select>
-
-      <table border="0" align="center">
-        <tbody>
-          <tr>
-            <td colSpan="2">
-              <input
-                type="text"
-                name="title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder="제목을 입력해주세요."
-              />
-            </td>
-          </tr>
-          <tr>
-            <td colSpan="2">
-              <textarea
-                name="content"
-                rows="10"
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                placeholder="내용을 입력해주세요"
-              />
-            </td>
-          </tr>
-
-          {/*  조건부 렌더링 */}
-          {isPacked && (
-            <>
-              <tr>
-                <td colSpan="2">
-                  <textarea
-                    name="codeContent"
-                    rows="10"
-                    value={codeContent}
-                    onChange={(e) => setCodeContent(e.target.value)}
-                    placeholder="코드를 입력해주세요"
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td colSpan="2">
-                  <textarea
-                    name="errorContent"
-                    rows="10"
-                    value={errorContent}
-                    onChange={(e) => setErrorContent(e.target.value)}
-                    placeholder="에러 내용을 입력해주세요"
-                  />
-                </td>
-              </tr>
-            </>
-          )}
-
-          <tr>
-            <td colSpan="2">{regDate.toLocaleString()} / {updateDate.toLocaleString()}</td>
-          </tr>
-          <tr>
-            <td align="right" colSpan="2">
-              <button onClick={handleSubmit}>등록</button>
-              <Link to={'/'} style={{ marginLeft: "10px" }}  state={{ userId: userId }}>취소</Link>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div className="container mt-5">
+      <h2 className="mb-3">📄 게시글 작성</h2>
+      <p className="text-muted">작성자: <strong>{userId}</strong></p>
+  
+      <div className="mb-3">
+        <label htmlFor="selectBox" className="form-label">카테고리</label>
+        <select id="selectBox" className="form-select" value={ctId} onChange={handleCategoryChange}>
+          <option value="0">공지</option>
+          <option value="1">코드/에러</option>
+          <option value="2">일반</option>
+        </select>
+      </div>
+  
+      <div className="mb-3">
+        <input
+          type="text"
+          name="title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          className="form-control"
+          placeholder="제목을 입력해주세요."
+        />
+      </div>
+  
+      <div className="mb-3">
+        <textarea
+          name="content"
+          rows="6"
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          className="form-control"
+          placeholder="내용을 입력해주세요"
+        />
+      </div>
+  
+      {isPacked && (
+        <>
+          <div className="mb-3">
+            <textarea
+              name="codeContent"
+              rows="6"
+              value={codeContent}
+              onChange={(e) => setCodeContent(e.target.value)}
+              className="form-control"
+              placeholder="코드를 입력해주세요"
+            />
+          </div>
+          <div className="mb-3">
+            <textarea
+              name="errorContent"
+              rows="6"
+              value={errorContent}
+              onChange={(e) => setErrorContent(e.target.value)}
+              className="form-control"
+              placeholder="에러 내용을 입력해주세요"
+            />
+          </div>
+        </>
+      )}
+  
+      <p className="text-secondary">{regDate.toLocaleString()} / {updateDate.toLocaleString()}</p>
+  
+      <div className="d-flex justify-content-end">
+        <button className="btn btn-primary me-2" onClick={handleSubmit}>등록</button>
+        <Link className="btn btn-outline-secondary" to="/" state={{ userId: userId }}>
+          취소
+        </Link>
+      </div>
     </div>
   );
 }

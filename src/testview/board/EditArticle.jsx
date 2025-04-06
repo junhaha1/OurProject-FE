@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
 import { useNavigate, useLocation, Link } from "react-router-dom";
-import ApiClient from "../../service/ApiClient";
+import ApiClient from "../service/ApiClient";
 
 function EditArticle() {
   const location = useLocation();
@@ -60,81 +60,61 @@ function EditArticle() {
   if (userId.trim() === "guest") return <div>로그인 유저만 가능한 서비스입니다.</div>;
 
   return (
-    <div>
-      <h2>게시글 작성</h2>
-      <h3>게시글 수정중입니다😎</h3>
-      <p>작성자: {userId}</p>
-
-      <select id="selectBox" name="category" onChange={handleCategoryChange} value={ctId}>
-        <option value="0">공지</option>
-        <option value="1">코드/에러</option>
-        <option value="2">일반</option>
-      </select>
-
-      <table border="0" align="center">
-        <tbody>
-          <tr>
-            <td>
-              <input
-                type="text"
-                name="title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                placeholder={article.title}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <textarea
-                name="content"
-                rows="10"
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                placeholder={article.content}
-              />
-            </td>
-          </tr>
-
-          {/*  조건부 렌더링 */}
+    <div className="container mt-5">
+      <div className="card">
+        <div className="card-body">
+          <h2 className="card-title">게시글 {isEdit ? '수정' : '작성'}</h2>
+          <p className="text-muted">작성자: {userId}</p>
+  
+          <select className="form-select mb-3" value={ctId} onChange={handleCategoryChange}>
+            <option value="0">공지</option>
+            <option value="1">코드/에러</option>
+            <option value="2">일반</option>
+          </select>
+  
+          <input
+            className="form-control mb-3"
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            placeholder="제목을 입력해주세요"
+          />
+  
+          <textarea
+            className="form-control mb-3"
+            rows="5"
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            placeholder="내용을 입력해주세요"
+          />
+  
           {isPacked && (
             <>
-              <tr>
-                <td>
-                  <textarea
-                    name="codeContent"
-                    rows="10"
-                    value={codeContent}
-                    onChange={(e) => setCodeContent(e.target.value)}
-                    placeholder={article.codeContent}
-                  />
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <textarea
-                    name="errorContent"
-                    rows="10"
-                    value={errorContent}
-                    onChange={(e) => setErrorContent(e.target.value)}
-                    placeholder={article.errorContent}
-                  />
-                </td>
-              </tr>
+              <textarea
+                className="form-control mb-3"
+                rows="5"
+                value={codeContent}
+                onChange={(e) => setCodeContent(e.target.value)}
+                placeholder="코드를 입력해주세요"
+              />
+              <textarea
+                className="form-control mb-3"
+                rows="5"
+                value={errorContent}
+                onChange={(e) => setErrorContent(e.target.value)}
+                placeholder="에러 내용을 입력해주세요"
+              />
             </>
           )}
-
-          <tr>
-            <td colSpan="2">{regDate.toLocaleString()} / {updateDate.toLocaleString()}</td>
-          </tr>
-          <tr>
-            <td align="right" colSpan="2">
-              <button onClick={handleSubmit}>저장</button>
-              <Link to={'/'} style={{ marginLeft: "10px" }}  state={{ userId: userId }}>취소</Link>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+  
+          <div className="mb-3 text-muted">{regDate.toLocaleString()} / {updateDate.toLocaleString()}</div>
+  
+          <div className="d-flex justify-content-end gap-2">
+            <button className="btn btn-success" onClick={handleSubmit}>저장</button>
+            <Link className="btn btn-danger" to={'/'} state={{ userId: userId }}>취소</Link>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

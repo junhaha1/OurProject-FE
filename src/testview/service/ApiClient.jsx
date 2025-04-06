@@ -119,7 +119,8 @@ class ApiClient{
 
     //댓글
     static sendComment(articleId, userId, content, codeContent, regDate, updateDate){
-        return fetch(ApiClient.SEVER_URL + ApiClient.POST_COMMENT + userId +"/" + articleId, {
+        console.log("댓글 저장 API 호출 후 : " + articleId +", " + userId );
+        return fetch(ApiClient.SEVER_URL + ApiClient.POST_COMMENT + articleId +"/" + userId, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -127,8 +128,8 @@ class ApiClient{
             body: JSON.stringify({
                 articleId: articleId,
                 userId: userId,
-                content: content,
-                codeContent: codeContent,
+                comment: content,
+                codeComment: codeContent,
                 regDate: regDate,
                 updateDate: updateDate,
             }),
@@ -140,19 +141,15 @@ class ApiClient{
         return fetch(ApiClient.SEVER_URL + ApiClient.GET_COMMENT + articleId);
     }
 
-    static updateComment(articleId, userId, content, codeContent, regDate, updateDate){
+    static updateComment(commentId, content, codeContent){
         return fetch(ApiClient.SEVER_URL + ApiClient.PUT_COMMENT + commentId, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify({
-                articleId: articleId,
-                userId: userId,
-                content: content,
-                codeContent: codeContent,
-                regDate: regDate,
-                updateDate: updateDate,
+                comment: content,
+                codeComment: codeContent
             }),
         });
     }

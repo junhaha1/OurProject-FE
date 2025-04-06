@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, Link } from "react-router-dom";
-import ApiClient from '../../service/ApiClient';
+import ApiClient from '../service/ApiClient';
 
 const LoginView = () => {
     const [userId, setUserId] = useState("");
@@ -18,6 +18,8 @@ const LoginView = () => {
             if(id.trim() === data.userId.trim()){
                 setUserId(data.userId);
                 setName(data.name);
+                console.log("userName: " + name);
+                
             }else{
                 alert("아이디를 확인해주세요");
                 return;
@@ -29,6 +31,7 @@ const LoginView = () => {
                 alert("비밀번호를 확인해주세요");
                 return;
             }           
+            console.log("userID: " + userId);
 
             navigate('/', { state: { userId: userId, name: name}});
         }).catch((error) => {
@@ -37,36 +40,25 @@ const LoginView = () => {
         });    
     }
 
-
-
-
     return (
-        <div>
-            <h2>Login</h2>
-            <table border="0" align="center">
-        <tbody>            
-            <tr>
-                <td colSpan="2">
-                    <input type="text" name="userId" value={userId} onChange={(e) => setUserId(e.target.value)} placeholder="ID" />
-                </td>
-            </tr>
-            <tr>
-                <td colSpan="2">
-                    <input type="password" name="password" value={pwd} onChange={(e) => setPwd(e.target.value)} placeholder="PASSWARD" />
-                </td>
-            </tr>
-            <Link to={'/'}>비밀번호 찾기 / 아이디 찾기 </Link>
-            <tr>
-                <td align="right"></td>
-                <td>
-                  <button onClick={() => handleSubmit(userId, pwd)}>로그인</button>
-                  <Link to={'/'}>처음으로 </Link>
-                </td>
-            </tr>
-        </tbody>
-      </table>
+        <div className="container mt-5">
+          <div className="card mx-auto" style={{ maxWidth: '400px' }}>
+            <div className="card-body">
+              <h2 className="card-title text-center">Login</h2>
+              <input className="form-control mb-3" type="text" placeholder="ID" value={userId} onChange={(e) => setUserId(e.target.value)} />
+              <input className="form-control mb-3" type="password" placeholder="PASSWORD" value={pwd} onChange={(e) => setPwd(e.target.value)} />
+              <div className="d-flex justify-content-between">
+                <Link to={'/'}>비밀번호 찾기 / 아이디 찾기</Link>
+              </div>
+              <div className="d-flex justify-content-between mt-3">
+                <button className="btn btn-primary" onClick={() => handleSubmit(userId, pwd)}>로그인</button>
+                <Link className="btn btn-secondary" to={'/'}>처음으로</Link>
+              </div>
+            </div>
+          </div>
         </div>
-    );
+      );
+    
 };
 
 export default LoginView;

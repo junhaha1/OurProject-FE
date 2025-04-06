@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation, Link } from "react-router-dom";
-import ApiClient from '../../service/ApiClient';
+import ApiClient from '../service/ApiClient';
 import CommentView from './CommentView';
 
 
@@ -14,17 +14,18 @@ function ArticleDetail() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("디테일 boardId:", boardId);
     ApiClient.getArticle(boardId)
       .then(res => res.json())
       .then(data => {
-        setArticle(data)
+        setArticle(data);
         console.log(data);
       });
   }, [boardId]);
-
-  if(userId.trim() === "guest") return <div>로그인 유저만 가능한 서비스 입니다. </div>;
+  
+  if (userId.trim() === "guest") return <div>로그인 유저만 가능한 서비스 입니다.</div>;
   if (!article) return <div>로딩 중...</div>;
+  
+  
 
   const handleEdit = (boardId) => {
     if (userId.trim() === article.userId.trim()) {
@@ -55,28 +56,37 @@ function ArticleDetail() {
   }
   };
   
-
   return (
-    <div>
-      <h2>게시글 상세</h2>
-      <p><strong>제목:</strong> {article.title}</p>
-      <p><strong>작성자:</strong> {article.userId}</p>
-      <p><strong>내용:</strong> {article.content}</p>
-      <p><strong>코드내용:</strong> {article.codeContent}</p>
-      <p><strong>에러내용:</strong> {article.errorContent}</p>
-      <p>{article.regDate}</p>
-      <p>{article.likeCout}</p>
-    
-      <div>
-        <CommentView boardId={boardId} userId={userId}/>
-      </div>
-      <div>
-        <button onClick={() => handleEdit( boardId)}>글 수정</button>
-        <button onClick={() => handleDelete( boardId)}>글 삭제</button>
-        <Link to={'/'}  state={{ userId: userId }}>돌아가기</Link>
+    <div className="container mt-5">
+      <div className="card">
+        <div className="card-body">
+          <h2 className="card-title">게시글 상세</h2>
+          <p><strong>제목:</strong> {article.title}</p>
+          <p><strong>작성자:</strong> {article.userId}</p>
+          <p><strong>내용:</strong> {article.content}</p>
+          {article.ctId === 1 && (
+            <>
+              <p><strong>코드내용:</strong> {article.codeContent}</p>
+              <p><strong>에러내용:</strong> {article.errorContent}</p>
+            </>
+          )}
+          <p className="text-muted">{article.regDate}</p>
+          <p>❤ {article.likeCount}</p>
+  
+          <div className="mt-4">
+            <CommentView boardId={boardId} userId={userId} ctId={article.ctId} />
+          </div>
+  
+          <div className="d-flex justify-content-end gap-2 mt-4">
+            <button className="btn btn-warning" onClick={() => handleEdit(boardId)}>글 수정</button>
+            <button className="btn btn-danger" onClick={() => handleDelete(boardId)}>글 삭제</button>
+            <Link className="btn btn-secondary" to={'/'} state={{ userId: userId }}>돌아가기</Link>
+          </div>
+        </div>
       </div>
     </div>
   );
+  
 }
 
 export default ArticleDetail;

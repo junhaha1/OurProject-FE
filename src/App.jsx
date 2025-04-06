@@ -6,6 +6,9 @@ import LoginView from './testview/login/LoginView';  //로그인 화면 컴포�
 import AddArticle from './testview/board/AddArticle'
 import EditArticle from './testview/board/EditArticle';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+
 function App() {
   return (
     //<BoardListView/>

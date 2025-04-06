@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate,useLocation, Link } from "react-router-dom";
-import ApiClient from "../../service/ApiClient";
+import ApiClient from "../service/ApiClient";
 
 function BoardList() {
   const [articles, setArticles] = useState([]);
@@ -9,7 +9,9 @@ function BoardList() {
   const navigate = useNavigate(); 
   const location = useLocation();
   const userId = location.state?.userId || "guest"; // 기본값 설정
-  const name = location.state?.name || "guset";
+  console.log("userId" + userId);
+  // const name = location.state?.name || "guset";
+  // console.log("userName: " + name);
 
   useEffect(() => {
     ApiClient.getArticles()
@@ -46,48 +48,46 @@ function BoardList() {
   
 
   return (
-    <div>
-      <tr>
-          <td align="right"></td>
-          <td>
-          <Link to={'/login'}>로그인</Link>
-          <a href='#'>로그아웃</a>
-          </td>
-      </tr>
-      <tr>
-          <td align="right"></td>
-          <td>
-          <h3>{name}님 환영합니다. </h3>
-          </td>
-      </tr>
-
-      <h2>게시글 목록</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>글번호</th>
-            <th>작성자</th>
-            <th>제목</th>
-            <th>작성일</th>
-            <th>❤</th>
-          </tr>
-        </thead>
-        <tbody>
-          {articles.map((a) => (
-            <tr key={a.boardId}>
-              <td>{a.boardId}</td>
-              <td>{a.userId}</td>
-              <td  onClick={() => handleClick(a.boardId)} style={{ cursor: 'pointer' }}>{a.title}</td>
-              <td>{a.regDate}</td>
-              <td onClick={() => handleCount(a.boardId)} style={{ cursor: 'pointer' }}>{a.likeCount}</td>
+    <div className="container mt-5">
+      <div className="card p-3">
+        <div className="d-flex justify-content-between">          
+          <div>
+            <Link className="btn btn-outline-primary me-2" to={'/login'}>로그인</Link>
+            <button className="btn btn-outline-danger">로그아웃</button>
+          </div>
+        </div>
+  
+        <h2 className="mt-3">📋 게시글 목록</h2>
+        <h4>{userId}님 환영합니다</h4>
+        <table className="table table-striped">
+          <thead>
+            <tr>
+              <th>글번호</th>
+              <th>작성자</th>
+              <th>제목</th>
+              <th>작성일</th>
+              <th>❤</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-      <button onClick={() => handleSubmit(userId)}>글 쓰기</button>
-      
+          </thead>
+          <tbody>
+            {articles.map((a) => (
+              <tr key={a.boardId}>
+                <td>{a.boardId}</td>
+                <td>{a.userId}</td>
+                <td style={{ cursor: 'pointer' }} onClick={() => handleClick(a.boardId)}>{a.title}</td>
+                <td>{a.regDate}</td>
+                <td style={{ cursor: 'pointer' }} onClick={() => handleCount(a.boardId)}>{a.likeCount}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <div className="text-end">
+          <button className="btn btn-primary" onClick={() => handleSubmit(userId)}>글 쓰기</button>
+        </div>
+      </div>
     </div>
   );
+  
 }
 
 export default BoardList;
