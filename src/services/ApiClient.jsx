@@ -6,6 +6,9 @@ class ApiClient{
   static COMMNET_GOOD = "/comment/good";
   static BOARD_GOOD = "/board/good";
 
+  //사용자
+  static GET_USER = "/board/user/";
+
   //Get: 게시글 목록 가져오기
   static getArticleList(){
     return fetch(ApiClient.SERVER_URL + ApiClient.BOARD_ARTICLE + '/list')
@@ -38,6 +41,39 @@ class ApiClient{
   static sendArticle(userId, article_data){
     return fetch(ApiClient.SERVER_URL + ApiClient.BOARD_ARTICLE + "/" + userId, article_data);
   }
+
+  static updateArticle(articleId, userId, ctId, title, content, codeContent, errorContent, regDate, updateDate){
+    return fetch(ApiClient.SERVER_URL + ApiClient.BOARD_ARTICLE + "/" + articleId, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            userId: userId,
+            ctId: ctId,
+            title: title,
+            content: content,
+            codeContent: codeContent,
+            errorContent: errorContent,
+            regDate: regDate,
+            updateDate: updateDate,
+        }),
+    });
+  }
+
+  //삭제
+  static deleteArticle(articleId){
+      console.log("Delete Article By articleId ");
+      return fetch(ApiClient.SERVER_URL + ApiClient.BOARD_ARTICLE + "/" +  articleId, {
+          method: "DELETE", 
+          headers: {
+              "Content-Type": "application/json"
+          }
+      });
+  }
+
+
+
   //post: 게시글 좋아요 추가 기능
   static addLikeArticle(boardId, userId) {
     return fetch(ApiClient.SERVER_URL + ApiClient.BOARD_GOOD, {
@@ -52,6 +88,12 @@ class ApiClient{
   //delete: 게시글 좋아요 삭제 기능
   static deleteLikeArticle(boardId, userId){
     return fetch(ApiClient.SERVER_URL + ApiClient.BOARD_GOOD + "/" + boardId + "/" + userId, {method: 'DELETE'})
+  }
+
+  //사용자
+  static getUser(userId){
+    console.log("Get user By articleId ");
+    return fetch(ApiClient.SERVER_URL + ApiClient.GET_USER + userId);
   }
 }
 

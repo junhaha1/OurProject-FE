@@ -1,19 +1,25 @@
 import { useEffect, useState } from "react";
 import { Container, Table, Card, Button } from "react-bootstrap";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate,useLocation, Link } from "react-router-dom";
 import ApiClient from "../../services/ApiClient";
 
 function BoardList() {
   const [articles, setArticles] = useState([]);
   const navigate = useNavigate();
 
+  //유저 로그인 정보 유지
+  const location = useLocation();
+  const userId = location.state?.userId || "guest"; // 기본값 설정
+
+  //글 상세보기 => userId 넘겨주기
   const handleClick = (articleId) => {
-    navigate(`/detail/${articleId}`);
+    navigate(`/detail/${articleId}`, {state: { userId: userId }});
   };
 
-  const moveAddForm = () => {
-    navigate('/add');
-  }
+  //글 추가하기 => userId
+  const moveAddForm = (userId) => {
+    navigate(`/add`, { state: { userId: userId } });
+  };
 
   useEffect(() => {
     ApiClient.getArticleList().then((data) => {
@@ -37,7 +43,7 @@ function BoardList() {
         <Card className="shadow-sm rounded-4">
           <Card.Header className="bg-primary text-white d-flex justify-content-between align-items-center rounded-top-4">
             <h5 className="mb-0">📋 게시판</h5>
-            <Button variant="light" className="fw-bold px-4 py-1 rounded-pill" onClick={moveAddForm}>
+            <Button variant="light" className="fw-bold px-4 py-1 rounded-pill" onClick={() => moveAddForm(userId)}>
               글쓰기
             </Button>
           </Card.Header>

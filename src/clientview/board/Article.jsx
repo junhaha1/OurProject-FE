@@ -1,11 +1,18 @@
 import { useEffect, useState } from "react";
 import ApiClient from "../../services/ApiClient";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import { Container, Card, Button, Row, Col } from "react-bootstrap";
 
 const Article = (props) => {
   const [article, setArticle] = useState(null);
-  const [userId, setUserId] = useState("test@naver.com");
+
+  const location = useLocation();
+  const userId = location.state?.userId || "guest"; // 기본값 설정
+
+  //const [userId, setUserId] = useState("test@naver.com");
   const [existsGood, setExistsGood] = useState(null);
+
+  const navigate = useNavigate();
 
   const getCategoryLabel = (ctId) => { //카테고리 아이디 -> 텍스트로 변환
     switch (ctId) {
@@ -52,6 +59,36 @@ const Article = (props) => {
     }
   };
 
+
+  const handleEdit = (boardId) => {
+    if (userId.trim() === article.userId.trim()) {
+      navigate(`/editarticle/${boardId}`, { state: { userId: userId } });
+    } else {
+      alert("해당 게시물 작성자만 수정할 수 있습니다."); 
+    }
+  }; 
+  
+  const handleDelete = (boardId) => {
+    if (userId.trim() === article.userId.trim()) {
+      if (window.confirm("정말 삭제하시겠습니까?")) { 
+          ApiClient.deleteArticle(boardId)
+              .then(response => {
+                  if (!response.ok) {
+                      throw new Error(`서버 오류: ${response.status}`);
+                  }
+                  alert("게시글 삭제 완료!");
+                  navigate('/', { state: { userId: userId } });
+              })
+              .catch(error => {
+                  console.error("게시글 삭제 중 오류 발생:", error);
+                  alert("게시글 삭제 중 오류가 발생했습니다.");
+              });
+      }
+  } else {
+      alert("해당 게시물 작성자만 삭제할 수 있습니다."); 
+  }
+  };
+
   useEffect(() => {
     ApiClient.getArticleDetail(props.boardId).then((data) => {
       setArticle(data);
@@ -62,6 +99,8 @@ const Article = (props) => {
     });
   }, [props.boardId]);
 
+  //로그인된 유저만 가능
+  if (userId.trim() === "guest") return <div>로그인 유저만 가능한 서비스 입니다.</div>;
   if (!article) return <div>로딩 중...</div>;
 
   return (
@@ -129,6 +168,12 @@ const Article = (props) => {
       >
         {existsGood ? "❤️" : "🤍"} {article.likeCount || 0}
       </Button>
+
+      <div className="d-flex justify-content-end gap-2 mt-4">
+        <button className="btn btn-warning" onClick={() => handleEdit(article.boardId)}>글 수정</button>
+        <button className="btn btn-danger" onClick={() => handleDelete(article.boardId)}>글 삭제</button>
+        <Link className="btn btn-secondary" to={'/'} state={{ userId: userId }}>돌아가기</Link>
+      </div>
     </>
   );
 };

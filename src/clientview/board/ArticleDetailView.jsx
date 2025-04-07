@@ -23,13 +23,6 @@ function ArticleDetailView() {
           <div className="my-4" />
           {/*댓글 리스트*/}
           <CommentList boardId={articleId}/>
-
-          {/* 버튼 */}
-          <div className="text-end">
-            <Button variant="secondary" onClick={moveHome}>
-              목록으로
-            </Button>
-          </div>
         </Card.Body>
       </Card>
     </Container>
