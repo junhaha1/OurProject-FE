@@ -100,7 +100,15 @@ const Article = (props) => {
   }, [props.boardId]);
 
   //로그인된 유저만 가능
-  if (userId.trim() === "guest") return <div>로그인 유저만 가능한 서비스 입니다.</div>;
+  if (userId.trim() === "guest") {
+    return (
+      <div>
+        <p>로그인 유저만 가능한 서비스 입니다.</p>
+        <Link className="btn btn-secondary" to={'/'} state={{ userId: userId }}>돌아가기</Link>
+      </div>
+    );
+  }
+    
   if (!article) return <div>로딩 중...</div>;
 
   return (

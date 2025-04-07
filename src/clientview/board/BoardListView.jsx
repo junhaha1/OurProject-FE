@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Container, Table, Card, Button } from "react-bootstrap";
-import { useNavigate,useLocation, Link } from "react-router-dom";
+import { useNavigate, useLocation, Link } from "react-router-dom";
 import ApiClient from "../../services/ApiClient";
 
 function BoardList() {
@@ -13,7 +13,7 @@ function BoardList() {
 
   //글 상세보기 => userId 넘겨주기
   const handleClick = (articleId) => {
-    navigate(`/detail/${articleId}`, {state: { userId: userId }});
+    navigate(`/detail/${articleId}`, { state: { userId: userId } });
   };
 
   //글 추가하기 => userId
@@ -30,7 +30,11 @@ function BoardList() {
   return (
     <>
       <Container className="mt-4">
-        <Link to="/" style={{ textDecoration: 'none' }}>
+        <Link
+          to="/"
+          state={{ userId: userId }}
+          style={{ textDecoration: 'none' }}
+        >
           <h1 className="fw-bold text-dark" style={{ cursor: 'pointer' }}>
             ourproject
           </h1>
