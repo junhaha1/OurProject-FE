@@ -44,6 +44,12 @@ const CommentList = (props) => {
           </Card>
         ))
       )}
+      <button
+        onClick={() => setIsWriting(true)}
+        style={{ marginTop: "1rem", padding: "0.5rem 1rem", backgroundColor: "#4CAF50", color: "#fff", border: "none", borderRadius: "5px" }}
+      >
+        댓글 작성
+      </button>
     </div>
   );
 };
