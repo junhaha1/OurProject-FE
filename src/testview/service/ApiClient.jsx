@@ -155,7 +155,12 @@ class ApiClient{
     }
     static deleteComment(commentId){
         console.log("Delete Comment By commentId ");
-        return fetch(ApiClient.SEVER_URL + ApiClient.DELETE_COMMENT + commentId);
+        return fetch(ApiClient.SEVER_URL + ApiClient.DELETE_COMMENT + commentId, {
+            method: "DELETE", 
+            headers: {
+                "Content-Type": "application/json"
+            }
+        });
     }
 
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import ApiClient from '../service/ApiClient';
 
 const CommentView = ({ boardId, userId, ctId }) => {
-  console.log("ctId: " + ctId);  
+  console.log("ctId: " + ctId + "| userID: " + userId);  
   const [comments, setComments] = useState([]);
 
   const [comment, setComment] = useState("");
@@ -23,6 +23,7 @@ const CommentView = ({ boardId, userId, ctId }) => {
       .then(res => res.json())
       .then(data => {
         setComments(data);
+        console.log(data);
       });
   }, [refresh, boardId]);
 
