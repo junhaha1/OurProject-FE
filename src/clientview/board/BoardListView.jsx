@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Container, Table, Card, Button } from "react-bootstrap";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import ApiClient from "../../services/ApiClient";
+import BoardHeader from "./BoardHeader";
 
 function BoardList() {
   const [articles, setArticles] = useState([]);
@@ -29,20 +30,7 @@ function BoardList() {
 
   return (
     <>
-      <Container className="mt-4">
-        <Link
-          to="/"
-          state={{ userId: userId }}
-          style={{ textDecoration: 'none' }}
-        >
-          <h1 className="fw-bold text-dark" style={{ cursor: 'pointer' }}>
-            ourproject
-          </h1>
-        </Link>
-        <Link to="/login">
-          <Button variant="secondary" className="mt-2">로그인</Button>
-        </Link>
-      </Container>
+      <BoardHeader state={{userId: userId}}/>
       <Container className="mt-5">
         <Card className="shadow-sm rounded-4">
           <Card.Header className="bg-primary text-white d-flex justify-content-between align-items-center rounded-top-4">

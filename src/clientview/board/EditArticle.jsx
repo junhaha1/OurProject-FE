@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
-import { Container, Table, Card, Button } from "react-bootstrap";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import ApiClient from "../../services/ApiClient";
+import BoardHeader from "./BoardHeader";
 
 function EditArticle() {
   const location = useLocation();
@@ -61,17 +61,7 @@ function EditArticle() {
 
   return (
     <>
-      <Container className="mt-4">
-        <Link
-          to="/"
-          state={{ userId: userId }}
-          style={{ textDecoration: 'none' }}
-        >
-          <h1 className="fw-bold text-dark" style={{ cursor: 'pointer' }}>
-            ourproject
-          </h1>
-        </Link>
-      </Container>
+      <BoardHeader state={{userId: userId}}/>
       <div className="container mt-5">
         <div className="card">
           <div className="card-body">

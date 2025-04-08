@@ -152,7 +152,7 @@ const CommentList = (props) => {
                     👍 {comment.likeCount || 0}
                   </div>
                 </div>
-                {comment.userId.trim() === props.userId && (
+                {comment.userId === props.userId && (
                   <>
                     <div style={{ marginTop: "0.5rem", textAlign: "right" }}>
                       <button onClick={()=>commentEdit(comment)} style={{ marginRight: "0.5rem" }}>수정</button>

@@ -3,6 +3,7 @@ import { useNavigate, useLocation, Link } from "react-router-dom";
 
 import CommentList from "./CommentList";
 import Article from "./Article";
+import BoardHeader from "./BoardHeader";
 
 import { Container, Card, Button, Row, Col } from "react-bootstrap";
 
@@ -15,18 +16,7 @@ function ArticleDetailView() {
 
   return (
     <>
-      <Container className="mt-4">
-        <Link 
-          to="/" 
-          state={{ userId: userId }}
-          style={{ textDecoration: 'none' }}
-        >
-          <h1 className="fw-bold text-dark" style={{ cursor: 'pointer' }}>
-            ourproject
-          </h1>
-        </Link>
-      </Container>
-
+      <BoardHeader state={{userId: userId}}/>
       <Container className="my-5 d-flex justify-content-center">
         <Card className="p-4 shadow-sm w-100" style={{ maxWidth: "800px" }}>
           <Card.Body>

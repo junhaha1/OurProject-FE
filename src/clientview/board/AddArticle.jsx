@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, useLocation, Link } from "react-router-dom";
 import { Container, Card, Form, Button } from "react-bootstrap";
 import ApiClient from "../../services/ApiClient";
+import BoardHeader from "./BoardHeader";
 
 function AddArticle() {
   const [title, setTitle] = useState("");
@@ -33,17 +34,7 @@ function AddArticle() {
 
   return (
     <>
-      <Container className="mt-4">
-        <Link
-          to="/"
-          state={{ userId: userId }}
-          style={{ textDecoration: 'none' }}
-        >
-          <h1 className="fw-bold text-dark" style={{ cursor: 'pointer' }}>
-            ourproject
-          </h1>
-        </Link>
-      </Container>
+      <BoardHeader state={{userId: userId}}/>
       <Container className="mt-5">
         <Card className="shadow-sm rounded-4">
           <Card.Header className="bg-primary text-white rounded-top-4">
