@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import ApiClient from "../../services/ApiClient";
 import { Card, Form } from "react-bootstrap";
+import { useSelector } from 'react-redux';
 
 const CommentList = (props) => {
   const [comments, setComments] = useState([]);
@@ -17,6 +18,9 @@ const CommentList = (props) => {
   const [editingCommentId, setEditingCommentId] = useState(null); // 수정 중인 댓글 ID
   const [editComment, setEditComment] = useState("");
   const [editCodeComment, setEditCodeComment] = useState("");
+
+  const userId = useSelector((state) => state.user.userId) || 'guest'; //유저 아이디 가져오기 
+
 
   //댓글 등록
   const saveComment = (boardId, userId) => {
@@ -93,7 +97,7 @@ const CommentList = (props) => {
       });
   }, [refresh, props.boardId]);
 
-  if (props.userId.trim() === "guest") return <div></div>;
+  if (userId.trim() === "guest") return <div></div>;
 
   return (
     <div>
@@ -152,7 +156,7 @@ const CommentList = (props) => {
                     👍 {comment.likeCount || 0}
                   </div>
                 </div>
-                {comment.userId === props.userId && (
+                {comment.userId === userId && (
                   <>
                     <div style={{ marginTop: "0.5rem", textAlign: "right" }}>
                       <button onClick={()=>commentEdit(comment)} style={{ marginRight: "0.5rem" }}>수정</button>
@@ -202,7 +206,7 @@ const CommentList = (props) => {
           )}
           <div style={{ display: "flex", gap: "1rem" }}>
             <button
-              onClick={() => saveComment(props.boardId, props.userId)}
+              onClick={() => saveComment(props.boardId, userId)}
               style={{ padding: "0.5rem 1rem", backgroundColor: "#2196F3", color: "white", border: "none", borderRadius: "5px" }}
             >
               등록

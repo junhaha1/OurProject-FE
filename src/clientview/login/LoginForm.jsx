@@ -3,43 +3,45 @@ import { useNavigate, Link } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import ApiClient from "../../services/ApiClient";
 
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../store/userSlice';
+
 function LoginForm() {
   const [userId, setUserId] = useState("");
   const [pwd, setPwd] = useState("");
   const [name, setName] = useState('guest');
 
   const navigate = useNavigate(); 
+  const dispatch = useDispatch();
 
-  const handleSubmit = (id, pw) =>{
+  const handleSubmit = (id, pw) => {
     ApiClient.getUser(userId)
-    .then((res) => res.json())
-    .then((data) => {
-        console.log(data);
-
-        if(id.trim() === data.userId.trim()){
-            setUserId(data.userId);
-            setName(data.name);
-            console.log("userName: " + name);
-            
-        }else{
-            alert("아이디를 확인해주세요");
-            return;
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("User not found");
         }
-
-        if(pw.trim() === data.pwd.trim()){
-            setPwd(data.pwd);
-        }else{
-            alert("비밀번호를 확인해주세요");
-            return;
-        }           
-        console.log("userID: " + userId);
-
-        navigate('/', { state: { userId: userId, name: name}});
-    }).catch((error) => {
+        return res.json();
+      })
+      .then((data) => {
+        if (id.trim() !== data.userId.trim()) {
+          alert("아이디를 확인해주세요");
+          return;
+        }
+  
+        if (pw.trim() !== data.pwd.trim()) {
+          alert("비밀번호를 확인해주세요");
+          return;
+        }
+  
+        dispatch(setUser({ userId: data.userId, name: data.name }));
+        navigate('/');
+      })
+      .catch((error) => {
         console.error("Error fetching user:", error);
-        alert("서버 오류가 발생했습니다.");
-    });    
-}
+        alert("아이디를 확인해주세요"); // 또는 상세 메시지
+      });
+  }
+  
 
   return (
     <>

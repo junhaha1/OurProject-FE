@@ -3,6 +3,15 @@ import React from "react";
 import {useLocation, Link } from "react-router-dom";
 import { Container, Button } from "react-bootstrap";
 
+//유저 아이디 가져오기기
+import { useSelector } from 'react-redux'; 
+
+//store action함수 
+import { useDispatch } from 'react-redux';
+import { clearUser } from '../../store/userSlice';  
+
+
+
 /* 
   페이지 헤더
   메인 로고 => BoardListView(메인화면) 이동
@@ -10,10 +19,11 @@ import { Container, Button } from "react-bootstrap";
   로그아웃 버튼 => userId 삭제 후 BoardListView(메인화면) 이동
 */
 const BoardHeader = () => {
+  //유저 로그아웃
+  const dispatch = useDispatch();
   //유저 로그인 정보 유지
-  const location = useLocation();
-  const userId = location.state?.userId || "guest"; // 기본값 설정
-
+  const userId = useSelector((state) => state.user.userId) || 'guest';
+  
   return (
     <Container className="mt-4">
       <Link
@@ -35,7 +45,7 @@ const BoardHeader = () => {
         <>
           <p>{userId}</p>
           <Link to="/">
-            <Button variant="secondary" className="mt-2">
+            <Button variant="secondary" className="mt-2" onClick={() => dispatch(clearUser())}>
               로그아웃  
             </Button>
           </Link>
