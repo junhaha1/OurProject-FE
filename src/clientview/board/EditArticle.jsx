@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import { useParams } from 'react-router-dom';
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import ApiClient from "../../services/ApiClient";
 import BoardHeader from "./BoardHeader";
+import { useSelector } from 'react-redux';
 
 function EditArticle() {
-  const location = useLocation();
-  const userId = location.state?.userId || "guest";
+  const userId = useSelector((state) => state.user.userId) || 'guest'; //유저 아이디 가져오기 
 
   const [article, setArticle] = useState(null);
   const { boardId } = useParams();
@@ -52,7 +52,7 @@ function EditArticle() {
     ApiClient.updateArticle(boardId, userId, ctId, title, content, codeContent, errorContent, regDate, updateDate)
       .then(() => {
         alert("게시글 수정 완료!");
-        navigate('/', { state: { userId: userId } });
+        navigate('/');
       });
   };
 
@@ -61,7 +61,7 @@ function EditArticle() {
 
   return (
     <>
-      <BoardHeader state={{userId: userId}}/>
+      <BoardHeader />
       <div className="container mt-5">
         <div className="card">
           <div className="card-body">
@@ -113,7 +113,7 @@ function EditArticle() {
 
             <div className="d-flex justify-content-end gap-2">
               <button className="btn btn-success" onClick={handleSubmit}>저장</button>
-              <Link className="btn btn-danger" to={'/'} state={{ userId: userId }}>취소</Link>
+              <Link className="btn btn-danger" to={'/'}>취소</Link>
             </div>
           </div>
         </div>

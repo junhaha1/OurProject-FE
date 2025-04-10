@@ -1,8 +1,10 @@
 import { useState } from "react";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Container, Card, Form, Button } from "react-bootstrap";
 import ApiClient from "../../services/ApiClient";
 import BoardHeader from "./BoardHeader";
+import { useSelector } from 'react-redux';
+
 
 function AddArticle() {
   const [title, setTitle] = useState("");
@@ -13,8 +15,8 @@ function AddArticle() {
   const [regDate, setRegDate] = useState("2025-04-03");
   const navigate = useNavigate();
 
-  const location = useLocation();
-  const userId = location.state?.userId || "guest"; // 기본값 설정
+  //유저 정보 가져오기 
+  const userId = useSelector((state) => state.user.userId) || 'guest';
 
   const handleSubmit = () => {
     const article_data = {

@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import ApiClient from "../../services/ApiClient";
-import { useNavigate, useLocation, Link } from "react-router-dom";
-import { Container, Card, Button, Row, Col } from "react-bootstrap";
+import { useNavigate, Link } from "react-router-dom";
+import { Card, Button, Row, Col } from "react-bootstrap";
+import { useSelector } from 'react-redux';
 
 const Article = (props) => {
   const [article, setArticle] = useState(null);
 
-  const location = useLocation();
-  const userId = location.state?.userId || "guest"; // 기본값 설정
+  //유저 정보 가져오기 
+  const userId = useSelector((state) => state.user.userId) || 'guest';
 
-  //const [userId, setUserId] = useState("test@naver.com");
   const [existsGood, setExistsGood] = useState(null);
 
   const navigate = useNavigate();
@@ -60,7 +60,7 @@ const Article = (props) => {
   };
 
 
-  const handleEdit = (boardId) => {
+  const handleEdit = (boardId) => {  //글 작성자라면 글 수정 
     if (userId.trim() === article.userId.trim()) {
       navigate(`/editarticle/${boardId}`, { state: { userId: userId } });
     } else {
@@ -68,7 +68,7 @@ const Article = (props) => {
     }
   }; 
   
-  const handleDelete = (boardId) => {
+  const handleDelete = (boardId) => {  //글 작성자라면 글 삭제
     if (userId.trim() === article.userId.trim()) {
       if (window.confirm("정말 삭제하시겠습니까?")) { 
           ApiClient.deleteArticle(boardId)
@@ -104,7 +104,7 @@ const Article = (props) => {
     return (
       <div>
         <p>로그인 유저만 가능한 서비스 입니다.</p>
-        <Link className="btn btn-secondary" to={'/'} state={{ userId: userId }}>돌아가기</Link>
+        <Link className="btn btn-secondary" to={'/'}>돌아가기</Link>
       </div>
     );
   }
@@ -180,7 +180,7 @@ const Article = (props) => {
       <div className="d-flex justify-content-end gap-2 mt-4">
         <button className="btn btn-warning" onClick={() => handleEdit(article.boardId)}>글 수정</button>
         <button className="btn btn-danger" onClick={() => handleDelete(article.boardId)}>글 삭제</button>
-        <Link className="btn btn-secondary" to={'/'} state={{ userId: userId }}>돌아가기</Link>
+        <Link className="btn btn-secondary" to={'/'}>돌아가기</Link>
       </div>
     </>
   );
