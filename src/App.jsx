@@ -7,6 +7,7 @@ import ArticleDetailView from './clientview/board/ArticleDetailView'; //게시�
 import AddArticle from './clientview/board/AddArticle';
 import LoginForm from './clientview/login/LoginForm';
 import EditArticle from './clientview/board/EditArticle';
+import SignupForm from './clientview/login/SignupForm';
 
 
 
@@ -15,6 +16,7 @@ function App() {
     <Routes>
       <Route path="/" element={<BoardListView />} /> {/* 메인 화면 */}
       <Route path="/login" element={<LoginForm />}/> {/* 로그인 화면*/}
+      <Route path="/signup" element={<SignupForm />}/> {/* 회원가입입 화면*/}
       <Route path="/add" element={<AddArticle />}/> {/*글 쓰기 화면*/}
       <Route path="/detail/:articleId" element={<ArticleDetailView />} /> {/* 게시글 상세보기 */}
       <Route path="/editarticle/:boardId" element={<EditArticle/>}/>{/* 수정 화면 */} 

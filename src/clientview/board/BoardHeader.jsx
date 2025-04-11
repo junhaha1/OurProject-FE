@@ -35,12 +35,20 @@ const BoardHeader = () => {
           ourproject
         </h1>
       </Link>
-      {userId === "guest" ? (
+      {userId === "guest" ? (        
+        <div className="d-flex justify-content-start gap-2 mt-3">
         <Link to="/login">
-        <Button variant="secondary" className="mt-2">
-          로그인
-        </Button>
-      </Link>
+          <Button variant="secondary" className="mt-2">
+            로그인
+          </Button>
+        </Link>
+        <Link to="/signup">
+          <Button variant="secondary" className="mt-2">
+            회원가입
+          </Button>
+        </Link>
+      </div>
+      
       ):(
         <>
           <p>{userId}</p>

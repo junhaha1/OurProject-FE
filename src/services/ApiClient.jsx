@@ -6,9 +6,6 @@ class ApiClient{
   static COMMNET_GOOD = "/comment/good";
   static BOARD_GOOD = "/board/good";
 
-  //사용자
-  static GET_USER = "/board/user/";
-
   //Get: 게시글 목록 가져오기
   static getArticleList(){
     return fetch(ApiClient.SERVER_URL + ApiClient.BOARD_ARTICLE + '/list')
@@ -108,6 +105,7 @@ class ApiClient{
         }),
     });
   }
+
   //댓글 수정
   static updateComment(commentId, content, codeContent, updateDate){
     return fetch(ApiClient.SERVER_URL + ApiClient.BOARD_COMMNET + "/" + commentId, {
@@ -135,9 +133,26 @@ class ApiClient{
   }
 
   //사용자
+  static sendUser(userId, name, pwd, regDate){
+    console.log("유저저 저장 API 호출 후 : " + userId );
+    return fetch(ApiClient.SERVER_URL + ApiClient.BOARD_USER, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: userId,
+          name: name,
+          pwd: pwd,
+          regDate: regDate
+        }),
+    });
+  }
+  
+
   static getUser(userId){
     console.log("Get user By articleId ");
-    return fetch(ApiClient.SERVER_URL + ApiClient.GET_USER + userId);
+    return fetch(ApiClient.SERVER_URL + ApiClient.BOARD_USER + "/" + userId);
   }
 }
 
