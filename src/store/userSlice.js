@@ -13,10 +13,12 @@ const userSlice = createSlice({
     setUser: (state, action) => {
       state.userId = action.payload.userId;
       state.name = action.payload.name;
+      state.accessToken = action.payload.accessToken; //액세스 토큰 LocalStoragy에서 보관 관리
     },
     clearUser: (state) => {
       state.userId = null;
       state.name = 'guest';
+      state.accessToken = null;
     },
   },
 });

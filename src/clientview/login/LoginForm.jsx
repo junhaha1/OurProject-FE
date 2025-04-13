@@ -2,6 +2,7 @@ import { Form, Button, Container } from 'react-bootstrap';
 import { useNavigate, Link } from "react-router-dom";
 import { useEffect, useState } from 'react';
 import ApiClient from "../../services/ApiClient";
+import store from '../../store/store';
 
 import { useDispatch } from 'react-redux';
 import { setUser } from '../../store/userSlice';
@@ -41,7 +42,32 @@ function LoginForm() {
         alert("아이디를 확인해주세요"); // 또는 상세 메시지
       });
   }
+
+  const handleLogin = async (userId, pwd) => {
+    try {
+      const res = await ApiClient.login(userId, pwd);
   
+      const data = await res.json();
+  
+      if (!res.ok) {
+        if (data.error === "Not Found") {
+          throw new Error("아이디를 확인해주세요");
+        } else if (data.error === "Wrong password") {
+          throw new Error("비밀번호를 확인해주세요");
+        } else {
+          throw new Error("로그인에 실패했습니다");
+        }
+      }
+  
+      dispatch(setUser({ userId: data.userId, name: data.name, accessToken: data.accessToken }));
+
+      console.log("쿠키:", document.cookie);
+      console.log("Redux 상태:", store.getState().user);
+      navigate('/');
+    } catch (error) {
+      alert(error.message);
+    }
+  };
 
   return (
     <>
@@ -62,7 +88,7 @@ function LoginForm() {
                 <Link to={'/'}>비밀번호 찾기 / 아이디 찾기</Link>
               </div>
               <div className="d-flex justify-content-between mt-3">
-                <button className="btn btn-primary" onClick={() => handleSubmit(userId, pwd)}>로그인</button>
+                <button className="btn btn-primary" onClick={() => handleLogin(userId, pwd)}>로그인</button>
                 <Link className="btn btn-secondary" to={'/'}>처음으로</Link>
               </div>
             </div>
